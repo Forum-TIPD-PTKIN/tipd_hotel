@@ -7,6 +7,13 @@
         groups="tipd_hotel.group_tipd_hotel_user"
     />
     <menuitem
+        id="tipd_hotel_dashboard_menu"
+        name="Dashboard"
+        parent="tipd_hotel.tipd_hotel_management_menu"
+        action="action_tipd_hotel_dashboard"
+        sequence="0"
+    />
+    <menuitem
         id="tipd_hotel_frontdesk_menu"
         name="Frontdesk"
         parent="tipd_hotel.tipd_hotel_management_menu"

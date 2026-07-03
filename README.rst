@@ -45,4 +45,4 @@ Contributors
 Maintainers
 ~~~~~~~~~~~
 
-Modul ini dikelola bersama oleh Forum TIPD.
+Modul ini dikelola dan dipelihara bersama oleh Forum TIPD.

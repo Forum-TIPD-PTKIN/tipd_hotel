@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="tipd_hotel.DashboardClientAction">
+        <div class="o_action o_view_controller o_hotel_dashboard p-4" style="background-color: #f8f9fa; height: 100%; overflow-y: auto;">
+            <!-- Title -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0 text-gray-800 font-weight-bold">Hotel Management Dashboard</h1>
+                <button class="btn btn-primary" t-on-click="loadData"><i class="fa fa-refresh mr-2"></i>Refresh Data</button>
+            </div>
+            
+            <!-- KPI Cards Grid -->
+            <div class="row mb-4">
+                <!-- Today's & Total Bookings -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(135deg, #4e73df 0%, #224abe 100%); border-radius: 12px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="text-xs text-uppercase font-weight-bold text-white-50 mb-1">Pemesanan Hari Ini</div>
+                                    <div class="h2 mb-0 font-weight-bold" t-esc="state.kpis.today_booking_count"/>
+                                    <div class="text-xs text-white-50 mt-2">Total Pemesanan: <strong class="text-white" t-esc="state.kpis.total_booking_count"/></div>
+                                </div>
+                                <div class="h1 mb-0"><i class="fa fa-calendar-check-o opacity-75"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today's & Total Revenue -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(135deg, #e74a3b 0%, #be2617 100%); border-radius: 12px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="text-xs text-uppercase font-weight-bold text-white-50 mb-1">Pendapatan Hari Ini</div>
+                                    <div class="h2 mb-0 font-weight-bold">
+                                        Rp <t t-esc="state.kpis.today_revenue.toLocaleString('id-ID')"/>
+                                    </div>
+                                    <div class="text-xs text-white-50 mt-2">Total Pendapatan: <strong class="text-white">Rp <t t-esc="state.kpis.total_revenue.toLocaleString('id-ID')"/></strong></div>
+                                </div>
+                                <div class="h1 mb-0"><i class="fa fa-money opacity-75"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Arrivals -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%); border-radius: 12px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="text-xs text-uppercase font-weight-bold text-white-50 mb-1">Check-In Hari Ini</div>
+                                    <div class="h2 mb-0 font-weight-bold" t-esc="state.kpis.today_arrival_count"/>
+                                    <div class="text-xs text-white-50 mt-2">Tamu Masuk</div>
+                                </div>
+                                <div class="h1 mb-0"><i class="fa fa-sign-in opacity-75"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Departures -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm text-white" style="background: linear-gradient(135deg, #858796 0%, #60616f 100%); border-radius: 12px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="text-xs text-uppercase font-weight-bold text-white-50 mb-1">Check-Out Hari Ini</div>
+                                    <div class="h2 mb-0 font-weight-bold" t-esc="state.kpis.today_departure_count"/>
+                                    <div class="text-xs text-white-50 mt-2">Tamu Keluar</div>
+                                </div>
+                                <div class="h1 mb-0"><i class="fa fa-sign-out opacity-75"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Details Table -->
+            <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+                <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 font-weight-bold text-dark">Detail Pemesanan Terkini</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="border-0 px-4 py-3">No. Reservasi</th>
+                                    <th class="border-0 py-3">Nama Tamu</th>
+                                    <th class="border-0 py-3">Check-in</th>
+                                    <th class="border-0 py-3">Check-out</th>
+                                    <th class="border-0 py-3">Status</th>
+                                    <th class="border-0 py-3">Total Biaya</th>
+                                    <th class="border-0 px-4 py-3 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="state.recent_bookings.length === 0">
+                                    <tr>
+                                        <td colspan="7" class="text-center py-5 text-muted">
+                                            <i class="fa fa-info-circle mr-2"></i>Belum ada data reservasi tercatat.
+                                        </td>
+                                    </tr>
+                                </t>
+                                <t t-foreach="state.recent_bookings" t-as="booking" t-key="booking.id">
+                                    <tr>
+                                        <td class="px-4 font-weight-bold text-primary" t-esc="booking.name"/>
+                                        <td class="font-weight-bold text-dark" t-esc="booking.partner_name"/>
+                                        <td t-esc="booking.check_in"/>
+                                        <td t-esc="booking.check_out"/>
+                                        <td>
+                                            <span class="badge rounded-pill px-3 py-2 text-uppercase font-weight-bold"
+                                                  t-attf-class="{{
+                                                      booking.state === 'draft' ? 'bg-secondary text-white' :
+                                                      booking.state === 'sale' ? 'bg-warning text-dark' :
+                                                      booking.state === 'done' ? 'bg-success text-white' : 'bg-danger text-white'
+                                                  }}"
+                                                  t-esc="booking.state"/>
+                                        </td>
+                                        <td class="font-weight-bold text-dark">
+                                            Rp <t t-esc="booking.amount_total.toLocaleString('id-ID')"/>
+                                        </td>
+                                        <td class="px-4 text-center">
+                                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" t-on-click="() => this.openFolio(booking.id)">
+                                                <i class="fa fa-eye mr-1"></i> Lihat
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

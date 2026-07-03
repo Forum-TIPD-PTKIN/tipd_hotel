@@ -300,6 +300,59 @@ class HotelFolio(models.Model):
             }
         )
 
+    @api.model
+    def get_dashboard_data(self):
+        # Time constraints
+        today_start = fields.Datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        today_end = today_start + timedelta(days=1)
+        
+        # Today's Bookings
+        today_bookings = self.search([('create_date', '>=', today_start), ('create_date', '<', today_end)])
+        today_booking_count = len(today_bookings)
+        
+        # Total Bookings
+        total_booking_count = self.search_count([])
+        
+        # Today's Arrivals & Departures
+        RoomLine = self.env['folio.room.line']
+        today_arrivals = RoomLine.search_count([('check_in', '>=', today_start), ('check_in', '<', today_end)])
+        today_departures = RoomLine.search_count([('check_out', '>=', today_start), ('check_out', '<', today_end)])
+        
+        # Revenues
+        confirmed_today = self.search([('state', 'in', ('sale', 'done')), ('date_order', '>=', today_start), ('date_order', '<', today_end)])
+        today_revenue = sum(confirmed_today.mapped('amount_total'))
+        
+        all_confirmed = self.search([('state', 'in', ('sale', 'done'))])
+        total_revenue = sum(all_confirmed.mapped('amount_total'))
+        
+        # Recent Bookings
+        recent_folios = self.search([], order='create_date desc', limit=10)
+        recent_bookings = []
+        for folio in recent_folios:
+            room_lines = folio.room_line_ids
+            check_in = room_lines[0].checkin_date if room_lines else False
+            check_out = room_lines[0].checkout_date if room_lines else False
+            
+            recent_bookings.append({
+                'id': folio.id,
+                'name': folio.name or '',
+                'partner_name': folio.partner_id.name or '',
+                'check_in': fields.Datetime.to_string(check_in) if check_in else '',
+                'check_out': fields.Datetime.to_string(check_out) if check_out else '',
+                'state': folio.state or 'draft',
+                'amount_total': folio.amount_total or 0.0,
+            })
+            
+        return {
+            'today_booking_count': today_booking_count,
+            'total_booking_count': total_booking_count,
+            'today_revenue': today_revenue,
+            'total_revenue': total_revenue,
+            'today_arrival_count': today_arrivals,
+            'today_departure_count': today_departures,
+            'recent_bookings': recent_bookings,
+        }
+
 
 class HotelFolioLine(models.Model):
 
