@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="tipd_hotel.FrontdeskClientAction">
+        <div class="o_action o_view_controller o_hotel_frontdesk">
+            <!-- Header for Day/Week/Month toggle -->
+            <div class="o_control_panel">
+                <div class="o_cp_top">
+                    <div class="o_cp_top_left">
+                        <ol class="breadcrumb" role="navigation">
+                            <li class="breadcrumb-item active">Frontdesk</li>
+                        </ol>
+                    </div>
+                    <div class="o_cp_top_right">
+                    </div>
+                </div>
+                <div class="o_cp_bottom">
+                    <div class="o_cp_bottom_left">
+                        <div class="btn-group" role="group">
+                            <!-- Basic nav buttons: Today, Prev, Next -->
+                            <button class="btn btn-secondary" t-on-click="() => this.changeDate('today')">Today</button>
+                            <button class="btn btn-secondary" t-on-click="() => this.changeDate('prev')"><i class="fa fa-arrow-left"></i></button>
+                            <button class="btn btn-secondary" t-on-click="() => this.changeDate('next')"><i class="fa fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="o_cp_bottom_right">
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-secondary" t-att-class="{active: state.mode === 'week'}" t-on-click="() => this.setMode('week')">Week</button>
+                            <button class="btn btn-secondary" t-att-class="{active: state.mode === 'month'}" t-on-click="() => this.setMode('month')">Month</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="o_content">
+                <div class="hotel-timeline-container" t-ref="timelineContainer">
+                    <table class="table table-bordered hotel-timeline-table">
+                        <thead>
+                            <tr>
+                                <th class="room-col-header">Rooms</th>
+                                <!-- Loop dates -->
+                                <t t-foreach="state.dates" t-as="date" t-key="date.id">
+                                    <th t-attf-class="date-col-header {{ date.isWeekend ? 'weekend-cell' : '' }}" t-esc="date.label"/>
+                                </t>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop room types -->
+                            <t t-foreach="state.rooms_data" t-as="rtype" t-key="rtype.id">
+                                <tr class="rtype-row">
+                                    <td class="rtype-name" t-att-colspan="state.dates.length + 1">
+                                        <b t-esc="rtype.name"/>
+                                    </td>
+                                </tr>
+                                <!-- Loop rooms in this type -->
+                                <t t-foreach="rtype.rooms" t-as="room" t-key="room.id">
+                                    <tr class="room-row" t-att-data-room-id="room.product_id">
+                                        <td class="room-name"><t t-esc="room.name"/></td>
+                                        <!-- Loop dates to draw cells -->
+                                        <t t-foreach="state.dates" t-as="date" t-key="date.id">
+                                            <td t-attf-class="timeline-cell {{ date.isWeekend ? 'weekend-cell' : '' }}" t-att-data-date="date.id" t-att-data-room="room.product_id">
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Overlay reservations -->
+                    <div class="reservations-overlay">
+                        <t t-foreach="state.reservations_data" t-as="res" t-key="res.id">
+                            <!-- Only display if it has calculated coordinates -->
+                            <t t-if="res.left !== undefined">
+                                <div class="reservation-block" 
+                                     t-att-class="'status-' + res.state"
+                                     t-att-style="'left: ' + res.left + 'px; width: ' + res.width + 'px; top: ' + res.top + 'px; height: ' + res.height + 'px;'"
+                                     t-on-click="() => this.openReservationPopup(res)">
+                                    <div class="res-title" t-esc="res.guest_name"/>
+                                    <div class="res-tooltip">
+                                        <div><b>Guest:</b> <t t-esc="res.guest_name"/></div>
+                                        <div><b>Room:</b> <t t-esc="res.room_name"/></div>
+                                        <div><b>Status:</b> <t t-esc="res.status"/></div>
+                                        <div><b>In:</b> <t t-esc="res.checkin_date"/></div>
+                                        <div><b>Out:</b> <t t-esc="res.checkout_date"/></div>
+                                    </div>
+                                </div>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

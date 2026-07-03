@@ -1,0 +1,166 @@
+.o_hotel_frontdesk {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.hotel-timeline-container {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 100%;
+    padding: 10px;
+    background-color: white;
+}
+
+.hotel-timeline-table {
+    table-layout: fixed;
+    width: max-content;
+    border-collapse: collapse;
+    margin-bottom: 0;
+}
+
+.hotel-timeline-table th, .hotel-timeline-table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.room-col-header {
+    width: 200px;
+    position: sticky;
+    left: 0;
+    background-color: #008f8c;
+    color: white;
+    z-index: 10;
+}
+
+.date-col-header {
+    width: 60px;
+    background-color: #008f8c;
+    color: white;
+    font-size: 12px;
+}
+
+.rtype-row .rtype-name {
+    background-color: #008f8c;
+    color: white;
+    text-align: left;
+    padding-left: 10px;
+    position: sticky;
+    left: 0;
+    z-index: 9;
+}
+
+.room-row .room-name {
+    background-color: #55b5b2;
+    color: white;
+    text-align: left;
+    padding-left: 10px;
+    position: sticky;
+    left: 0;
+    z-index: 9;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.timeline-cell {
+    height: 40px;
+    min-width: 60px;
+}
+
+.reservations-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.reservation-block {
+    position: absolute;
+    border-radius: 3px;
+    color: white;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 5;
+    padding: 0 4px;
+}
+
+.reservation-block:hover {
+    z-index: 11;
+}
+
+.reservation-block .res-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Tooltip on hover */
+.reservation-block .res-tooltip {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 8px;
+    border-radius: 4px;
+    width: max-content;
+    z-index: 100;
+    text-align: left;
+}
+
+.reservation-block:hover .res-tooltip {
+    display: block;
+}
+
+/* Status colors similar to standard odoo or custom */
+.status-draft { background-color: #6c757d; } /* gray */
+.status-sent { background-color: #17a2b8; } /* cyan */
+.status-sale { background-color: #ffc107; color: black; } /* yellow/orange */
+.status-done { background-color: #28a745; } /* green */
+.status-cancel { background-color: #dc3545; } /* red */
+
+/* UI Polish Additions */
+.weekend-cell {
+    background-color: #f4f6f9;
+}
+
+.timeline-cell.weekend-cell {
+    border-right: 1px solid #dee2e6;
+}
+
+th.weekend-cell {
+    background-color: #007c7a; /* slightly darker header for weekend */
+}
+
+/* Enhancing reservation block visually */
+.reservation-block {
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.reservation-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.12);
+}
+
+/* Realign Control Panel buttons for better look */
+.o_hotel_frontdesk .o_control_panel .o_cp_bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}

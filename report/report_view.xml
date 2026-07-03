@@ -1,0 +1,10 @@
+<odoo>
+    <!--Report for hotel folio -->
+    <record id="report_tipd_hotel_management" model="ir.actions.report">
+         <field name="name">Hotel Folio</field>
+         <field name="model">tipd_hotel.folio</field>
+         <field name="report_type">qweb-pdf</field>
+         <field name="report_file">tipd_hotel.report_tipd_hotel_folio</field>
+         <field name="report_name">tipd_hotel.report_tipd_hotel_folio</field>
+    </record>
+</odoo>

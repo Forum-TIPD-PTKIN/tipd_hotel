@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_tipd_hotel_reservation_edit_wizard_form" model="ir.ui.view">
+        <field name="name">tipd.hotel.reservation.edit.wizard.form</field>
+        <field name="model">tipd_hotel.reservation.edit.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Change Reservation">
+                <group>
+                    <group string="Old Details">
+                        <field name="old_room_id"/>
+                        <field name="old_checkin"/>
+                        <field name="old_checkout"/>
+                    </group>
+                    <group string="New Details">
+                        <field name="new_room_id"/>
+                        <field name="new_checkin"/>
+                        <field name="new_checkout"/>
+                    </group>
+                </group>
+                <footer>
+                    <button string="Save Changes" type="object" name="action_save" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

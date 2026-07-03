@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="0">
+    <record model="ir.module.category" id="module_category_tipd_hotel">
+        <field name="name">TIPD Hotel Management</field>
+        <field name="description">Helps you handle your hotel management.</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <record model="res.groups.privilege" id="privilege_tipd_hotel">
+        <field name="name">TIPD Hotel Access</field>
+        <field name="category_id" ref="module_category_tipd_hotel"/>
+    </record>
+
+    <!--Group for hotel user -->
+    <record id="group_tipd_hotel_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="privilege_id" ref="privilege_tipd_hotel"/>
+        <field eval="[(4, ref('base.user_root'))]" name="implied_ids" />
+    </record>
+    
+    <!--Group for hotel manager -->
+    <record id="group_tipd_hotel_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="privilege_tipd_hotel"/>
+        <field eval="[(4, ref('tipd_hotel.group_tipd_hotel_user'))]" name="implied_ids" />
+        <field name="user_ids" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>
